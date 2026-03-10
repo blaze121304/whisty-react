@@ -24,6 +24,7 @@ export interface Whiskey {
   personalNote?: string // 개인 소감
   pairings?: { icon: string; name: string }[] // 페어링 추천
   flavorTags?: string[] // 테이스팅 프로파일 태그
+  price?: number  // 여기 추가
   createdAt: number
   updatedAt: number
 }
