@@ -136,7 +136,7 @@ export function WhiskeyForm({
       alert('위스키명을 입력해주세요.')
       return
     }
-    if (!category || category === '') {
+    if (!category) {
       alert('종류를 선택해주세요.')
       return
     }
