@@ -118,7 +118,7 @@ export function WhiskeyForm({
     e.preventDefault()
     setIsDragging(false)
     const file = e.dataTransfer.files[0]
-    handleFileSelect(file)
+    handleFileSelect(file!)
   }
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -328,7 +328,7 @@ export function WhiskeyForm({
                   className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0]
-                    handleFileSelect(file)
+                    handleFileSelect(file!)
                   }}
                 />
                 {imageDataUrl ? (
