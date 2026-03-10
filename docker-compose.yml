@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  whiskey-front:
-    image: whiskey-front:latest
-    container_name: whiskey-front
+  whisty-react:
+    image: whisty-react:latest
+    container_name: whisty-react
     ports:
       - "10007:10007"
     restart: unless-stopped
