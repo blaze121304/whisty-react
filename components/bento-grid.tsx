@@ -62,13 +62,6 @@ export function BentoGrid({ items }: { items: Whiskey[] }) {
                       {w.category}
                     </span>
                   </div>
-                  {w.price > 0 && (
-                    <div className="absolute top-2 right-2 z-10">
-                      <span className="whiskey-price inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold border border-amber-500/30 shadow-sm bg-amber-500/20 backdrop-blur-sm dark:bg-amber-600/30">
-                        ₩{w.price.toLocaleString()}
-                      </span>
-                    </div>
-                  )}
                   {/* 호버 오버레이 */}
                   <div className="card-overlay absolute inset-0 bg-black/70 dark:bg-black/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
                     {w.personalNote && (
