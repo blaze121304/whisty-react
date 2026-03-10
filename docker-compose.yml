@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  whiskey-front:
+    image: whiskey-front:latest
+    container_name: whiskey-front
+    ports:
+      - "10007:10007"
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_BASE_URL: "http://host.docker.internal:10006/api"
+

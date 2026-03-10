@@ -2,15 +2,23 @@
 import { useState, useEffect } from 'react'
 
 export function DateTimeDisplay() {
-  const [dateTime, setDateTime] = useState(new Date())
+  const [dateTime, setDateTime] = useState<Date | null>(null)
 
   useEffect(() => {
+    // 클라이언트에서만 시간 값을 설정해 SSR/CSR 불일치 방지
+    setDateTime(new Date())
+
     const timer = setInterval(() => {
       setDateTime(new Date())
     }, 1000) // 1초마다 업데이트
 
     return () => clearInterval(timer)
   }, [])
+
+  // 초기 SSR 시점과 첫 클라이언트 렌더를 맞추기 위해, 마운트 전에는 렌더링하지 않음
+  if (!dateTime) {
+    return null
+  }
 
   const year = dateTime.getFullYear()
   const month = dateTime.getMonth() + 1

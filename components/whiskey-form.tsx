@@ -12,7 +12,7 @@ const categories: WhiskeyCategory[] = ['Single Malt', 'Blended Malt', 'World Whi
 
 const categoryLabels: Record<WhiskeyCategory, string> = {
   'Single Malt': '싱글몰트',
-  'Blended Malt': '블렌디드몰트',
+  'Blended Malt': '블렌디드',
   'World Whiskey': '월드위스키',
   'Gin & Vodka': '진&보드카',
   'Wine & Liqueur': '와인&리큐어',
@@ -209,14 +209,17 @@ export function WhiskeyForm({
               </div>
               <div>
                 <Label>종류 <span className="text-red-400">*</span></Label>
-                <Select value={category} onChange={(e) => {
-                  setCategory(e.target.value as WhiskeyCategory | '')
-                  // 위스키 카테고리가 아니면 subCategories 초기화
-                  const cat = e.target.value as WhiskeyCategory | ''
-                  if (cat !== 'Single Malt' && cat !== 'Blended Malt' && cat !== 'World Whiskey') {
-                    setSubCategories([])
-                  }
-                }}>
+                <Select
+                  value={category}
+                  onChange={(e) => {
+                    setCategory(e.target.value as WhiskeyCategory | '')
+                    // 셰리/피트/버번 서브 특성을 사용하는 카테고리만 유지 (싱글몰트, 월드위스키)
+                    const cat = e.target.value as WhiskeyCategory | ''
+                    if (cat !== 'Single Malt' && cat !== 'World Whiskey') {
+                      setSubCategories([])
+                    }
+                  }}
+                >
                   <option value="">선택해주세요</option>
                   {categories.map((c) => (
                     <option key={c} value={c}>{categoryLabels[c]}</option>
@@ -276,8 +279,8 @@ export function WhiskeyForm({
                 placeholder="4.5" 
               />
             </div>
-            {/* 셰리/피트/버번 체크박스 - 위스키 카테고리일 때만 표시 */}
-            {(category === 'Single Malt' || category === 'Blended Malt' || category === 'World Whiskey') && (
+            {/* 셰리/피트/버번 체크박스 - 블렌디드를 제외한 위스키 카테고리(싱글몰트, 월드위스키)에서만 표시 */}
+            {(category === 'Single Malt' || category === 'World Whiskey') && (
               <div>
                 <Label>특성 (선택)</Label>
                 <div className="mt-2 flex flex-wrap gap-4">

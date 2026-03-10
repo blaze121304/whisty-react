@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server'
 const FALLBACK_QUOTES = [
   '오늘도 한 잔의 여유를.',
   '인생은 너무 짧다. 나쁜 술을 마시기엔.',
-  '천천히, 그러나 확실하게.',
   '좋은 술과 좋은 대화는 가장 훌륭한 동반자.',
 ]
 

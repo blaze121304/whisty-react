@@ -6,7 +6,7 @@ import { useState } from 'react'
 const whiskeyCategories: Array<{ value: WhiskeyCategory | 'whiskey-all'; label: string }> = [
   { value: 'whiskey-all', label: '전체' },
   { value: 'Single Malt', label: '싱글몰트' },
-  { value: 'Blended Malt', label: '블렌디드 몰트' },
+  { value: 'Blended Malt', label: '블렌디드' },
   { value: 'World Whiskey', label: '월드위스키' },
 ]
 
@@ -36,7 +36,8 @@ export function CategorySidebar({
   onSubCategorySelect?: (v: WhiskeySubCategory | 'all' | undefined) => void
 }) {
   const isWhiskeyCategory = (cat: WhiskeyCategory): boolean => {
-    return cat === 'Single Malt' || cat === 'Blended Malt' || cat === 'World Whiskey'
+    // 셰리/피트/버번 서브 특성을 사용하는 카테고리만 위스키 상세 검색 대상으로 간주 (블렌디드는 제외)
+    return cat === 'Single Malt' || cat === 'World Whiskey'
   }
 
   const isSpiritCategory = (cat: WhiskeyCategory): boolean => {
@@ -65,7 +66,8 @@ export function CategorySidebar({
   }
 
   const isWhiskeyCategorySelected = (cat: WhiskeyCategory): boolean => {
-    return cat === 'Single Malt' || cat === 'Blended Malt' || cat === 'World Whiskey'
+    // 셰리/피트/버번 서브 특성을 사용하는 카테고리만 위스키 상세 검색 대상으로 간주 (블렌디드는 제외)
+    return cat === 'Single Malt' || cat === 'World Whiskey'
   }
 
   return (

@@ -56,8 +56,8 @@ export default function HomePage() {
         inType = w.category === typeFilter
       }
       
-      // 위스키 상세 검색 필터링 (싱글몰트, 블렌디드 몰트, 월드위스키)
-      if ((typeFilter === 'Single Malt' || typeFilter === 'Blended Malt' || typeFilter === 'World Whiskey') && subCategoryFilter && subCategoryFilter !== 'all') {
+      // 위스키 상세 검색 필터링 (싱글몰트, 월드위스키) - 블렌디드는 셰리/피트/버번 구분 없음
+      if ((typeFilter === 'Single Malt' || typeFilter === 'World Whiskey') && subCategoryFilter && subCategoryFilter !== 'all') {
         // subCategories 배열 또는 subCategory (하위 호환성)에서 체크
         const subCats = w.subCategories && w.subCategories.length > 0 
           ? w.subCategories 
