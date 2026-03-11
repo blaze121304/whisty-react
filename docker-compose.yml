@@ -6,7 +6,7 @@ services:
       context: .
       args:
         # 브라우저에서 접근 가능한 백엔드 주소
-        NEXT_PUBLIC_API_BASE_URL: "http://localhost:10006/api"
+        NEXT_PUBLIC_API_BASE_URL: "http://host.docker.internal:10006/api"
     image: whisty-react:latest
     container_name: whisty-react
     ports:
