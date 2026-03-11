@@ -5,16 +5,16 @@ import { getAllWhiskeys, saveAllWhiskeys } from '@/lib/storage'
 export const SEED_FLAG_KEY = 'whiskey.seeded.v1'
 
 export async function ensureSeeded(): Promise<Whiskey[]> {
-  const existing = await getAllWhiskeys()
+  const existing = getAllWhiskeys()
   if (typeof window === 'undefined') return existing
-  if (existing.length === 0 && !localStorage.getItem(SEED_FLAG_KEY)) {
+  if ((await existing).length === 0 && !localStorage.getItem(SEED_FLAG_KEY)) {
     const seeds = generateSeedData()
     saveAllWhiskeys(seeds)
     localStorage.setItem(SEED_FLAG_KEY, '1')
     return seeds
   }
   // 간단한 브랜딩 정규화(예: brand가 'The'로 잘못 저장된 과거 시드 교정)
-  const normalized = normalizeBrands(existing)
+  const normalized = normalizeBrands(await existing)
   // 유효하지 않은 Unsplash 이미지 URL 제거 (404 에러 방지)
   const cleaned = cleanInvalidImageUrls(normalized.list)
   // 기존 데이터에 subCategory 추가
@@ -189,18 +189,14 @@ function normalizeBrands(list: Whiskey[]): { changed: boolean; list: Whiskey[] }
     // Case 2: "Johnnie Walker Black" → brand should be "Johnnie Walker"
     if ((w.brand === 'Johnnie' || w.brand === 'Walker') && /^Johnnie\s+Walker\b/.test(en)) {
       const fixedBrand = 'Johnnie Walker'
-      if (fixedBrand !== w.brand) {
-        changed = true
-        return { ...w, brand: fixedBrand, updatedAt: Date.now() }
-      }
+      changed = true
+      return { ...w, brand: fixedBrand, updatedAt: Date.now() }
     }
     // Case 3: "Chivas Regal 12" → brand should be "Chivas"
     if ((w.brand === 'Chivas Regal' || w.brand === 'Regal') && /^Chivas\s+Regal\b/.test(en)) {
       const fixedBrand = 'Chivas'
-      if (fixedBrand !== w.brand) {
-        changed = true
-        return { ...w, brand: fixedBrand, updatedAt: Date.now() }
-      }
+      changed = true
+      return { ...w, brand: fixedBrand, updatedAt: Date.now() }
     }
     // Case 4: Single-word brands from englishName start
     const singleWordMatch = en.match(/^(Glenfiddich|Lagavulin|Laphroaig|Ardbeg|Kavalan|Yamazaki|Hakushu|Nikka)\b/)
