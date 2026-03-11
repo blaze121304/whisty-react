@@ -4,7 +4,7 @@ import { getAllWhiskeys, saveAllWhiskeys } from '@/lib/storage'
 
 export const SEED_FLAG_KEY = 'whiskey.seeded.v1'
 
-export function ensureSeeded(): Whiskey[] {
+export async function ensureSeeded(): Promise<Whiskey[]> {
   const existing = getAllWhiskeys()
   if (typeof window === 'undefined') return existing
   if (existing.length === 0 && !localStorage.getItem(SEED_FLAG_KEY)) {
