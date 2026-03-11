@@ -8,6 +8,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+# 공개 API 베이스 URL을 빌드 타임에 주입
+ARG NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+
 COPY . .
 RUN npm run build
 
