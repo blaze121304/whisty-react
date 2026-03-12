@@ -1,5 +1,5 @@
 "use client"
-import { Whiskey, WhiskeyCategory } from './types'
+import { Whiskey, WhiskeyCategory, WhiskeySubCategory } from './types'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://192.168.0.206:10006/api'
 
@@ -40,7 +40,7 @@ function fromBackendCategory(category: string): WhiskeyCategory {
   return mapping[category] || category as WhiskeyCategory
 }
 
-// 서브카테고리 변환 함수
+// 서브카테고리/characteristic 변환 함수
 function toBackendSubCategory(subCategory: string): string {
   const mapping: Record<string, string> = {
     'Sherry': 'SHERRY',
@@ -61,14 +61,21 @@ function fromBackendSubCategory(subCategory: string): string {
 
 // 백엔드 응답을 프론트엔드 타입으로 변환
 function transformWhiskey(backendWhiskey: any): Whiskey {
+  // 백엔드 스펙: characteristics 필드에 SHERRY/PEAT/BOURBON 배열로 내려옴
+  const backendCharacteristics: string[] | undefined =
+    backendWhiskey.characteristics ?? backendWhiskey.subCategories
+
   return {
     id: String(backendWhiskey.id),
     name: backendWhiskey.name,
     englishName: backendWhiskey.englishName,
     brand: backendWhiskey.brand,
     category: fromBackendCategory(backendWhiskey.category),
-    subCategories: backendWhiskey.subCategories?.map((sc: string) => fromBackendSubCategory(sc) as any),
-    subCategory: backendWhiskey.subCategory ? fromBackendSubCategory(backendWhiskey.subCategory) as any : undefined,
+    subCategories: backendCharacteristics?.map((sc: string) => fromBackendSubCategory(sc) as any),
+    // 단일 subCategory는 하위 호환용 (기존 로컬스토리지 시드 등)
+    subCategory: backendWhiskey.subCategory
+      ? (fromBackendSubCategory(backendWhiskey.subCategory) as any)
+      : undefined,
     abv: backendWhiskey.abv,
     volume: backendWhiskey.volume,
     nation: backendWhiskey.nation,
@@ -96,7 +103,8 @@ function transformWhiskeyForBackend(whiskey: Partial<Whiskey>): any {
   if (whiskey.brand !== undefined) result.brand = whiskey.brand
   if (whiskey.category !== undefined) result.category = toBackendCategory(whiskey.category)
   if (whiskey.subCategories !== undefined) {
-    result.subCategories = whiskey.subCategories.map(sc => toBackendSubCategory(sc))
+    // 백엔드 스펙: characteristics 필드 사용
+    result.characteristics = whiskey.subCategories.map(sc => toBackendSubCategory(sc))
   }
   if (whiskey.abv !== undefined) result.abv = whiskey.abv
   if (whiskey.volume !== undefined) result.volume = whiskey.volume
@@ -129,6 +137,7 @@ export const whiskeyApi = {
   async getAll(params?: {
     category?: WhiskeyCategory
     search?: string
+    characteristic?: WhiskeySubCategory
     page?: number
     size?: number
     sort?: string
@@ -136,6 +145,7 @@ export const whiskeyApi = {
     const queryParams = new URLSearchParams()
     if (params?.category) queryParams.append('category', toBackendCategory(params.category))
     if (params?.search) queryParams.append('search', params.search)
+    if (params?.characteristic) queryParams.append('characteristic', toBackendSubCategory(params.characteristic))
     if (params?.page !== undefined) queryParams.append('page', String(params.page))
     if (params?.size !== undefined) queryParams.append('size', String(params.size))
     if (params?.sort) queryParams.append('sort', params.sort)
