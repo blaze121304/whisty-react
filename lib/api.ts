@@ -1,7 +1,7 @@
 "use client"
 import { Whiskey, WhiskeyCategory } from './types'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:10006/api'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://192.168.0.206:10006/api'
 
 // API 응답 타입
 interface PageResponse<T> {
