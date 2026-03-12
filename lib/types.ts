@@ -1,6 +1,15 @@
-export type WhiskeyCategory = 'Single Malt' | 'Blended Malt' | 'World Whiskey' | 'Gin & Vodka' | 'Wine & Liqueur' | 'Sake & Traditional' | 'Beer'
+// UI에서 사용하는 카테고리 레이블
+export type WhiskeyCategory =
+  | 'Single Malt'
+  | 'Blended'
+  | 'Grain/Bourbon/Rye'
+  | 'Gin & Vodka'
+  | 'Wine & Liqueur'
+  | 'Sake & Traditional'
+  | 'Beer & Soju'
 
-export type WhiskeySubCategory = 'Sherry' | 'Peat' | 'Bourbon'
+// 캐스크/풍미 특성 (백엔드 characteristics/cask와 매핑)
+export type WhiskeySubCategory = 'Sherry' | 'Peat' | 'Bourbon' | 'Wine/Port'
 
 export interface Whiskey {
   id: string

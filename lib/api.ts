@@ -12,16 +12,16 @@ interface PageResponse<T> {
   size: number
 }
 
-// 카테고리 변환 함수 (프론트엔드 -> 백엔드)
-function toBackendCategory(category: WhiskeyCategory): string {
+// 스타일/카테고리 변환 함수 (프론트엔드 -> 백엔드 style/category)
+function toBackendStyle(category: WhiskeyCategory): string {
   const mapping: Record<WhiskeyCategory, string> = {
     'Single Malt': 'SINGLE_MALT',
-    'Blended Malt': 'BLENDED_MALT',
-    'World Whiskey': 'WORLD_WHISKEY',
+    'Blended': 'BLENDED',
+    'Grain/Bourbon/Rye': 'GRAIN_BOURBON_RYE',
     'Gin & Vodka': 'GIN_VODKA',
     'Wine & Liqueur': 'WINE_LIQUEUR',
     'Sake & Traditional': 'SAKE_TRADITIONAL',
-    'Beer': 'BEER',
+    'Beer & Soju': 'BEER_SOJU',
   }
   return mapping[category] || category
 }
@@ -30,12 +30,12 @@ function toBackendCategory(category: WhiskeyCategory): string {
 function fromBackendCategory(category: string): WhiskeyCategory {
   const mapping: Record<string, WhiskeyCategory> = {
     'SINGLE_MALT': 'Single Malt',
-    'BLENDED_MALT': 'Blended Malt',
-    'WORLD_WHISKEY': 'World Whiskey',
+    'BLENDED': 'Blended',
+    'GRAIN_BOURBON_RYE': 'Grain/Bourbon/Rye',
     'GIN_VODKA': 'Gin & Vodka',
     'WINE_LIQUEUR': 'Wine & Liqueur',
     'SAKE_TRADITIONAL': 'Sake & Traditional',
-    'BEER': 'Beer',
+    'BEER_SOJU': 'Beer & Soju',
   }
   return mapping[category] || category as WhiskeyCategory
 }
@@ -46,6 +46,7 @@ function toBackendSubCategory(subCategory: string): string {
     'Sherry': 'SHERRY',
     'Peat': 'PEAT',
     'Bourbon': 'BOURBON',
+    'Wine/Port': 'WINE_PORT',
   }
   return mapping[subCategory] || subCategory
 }
@@ -55,6 +56,7 @@ function fromBackendSubCategory(subCategory: string): string {
     'SHERRY': 'Sherry',
     'PEAT': 'Peat',
     'BOURBON': 'Bourbon',
+    'WINE_PORT': 'Wine/Port',
   }
   return mapping[subCategory] || subCategory
 }
@@ -101,7 +103,7 @@ function transformWhiskeyForBackend(whiskey: Partial<Whiskey>): any {
   if (whiskey.name !== undefined) result.name = whiskey.name
   if (whiskey.englishName !== undefined) result.englishName = whiskey.englishName
   if (whiskey.brand !== undefined) result.brand = whiskey.brand
-  if (whiskey.category !== undefined) result.category = toBackendCategory(whiskey.category)
+  if (whiskey.category !== undefined) result.category = toBackendStyle(whiskey.category)
   if (whiskey.subCategories !== undefined) {
     // 백엔드 스펙: characteristics 필드 사용
     result.characteristics = whiskey.subCategories.map(sc => toBackendSubCategory(sc))
@@ -135,17 +137,28 @@ class ApiError extends Error {
 export const whiskeyApi = {
   // 전체 위스키 목록 조회
   async getAll(params?: {
-    category?: WhiskeyCategory
+    category?: WhiskeyCategory   // UI 스타일 필터
     search?: string
-    characteristic?: WhiskeySubCategory
+    cask?: WhiskeySubCategory | 'Other'
+    nation?: string
     page?: number
     size?: number
     sort?: string
   }): Promise<Whiskey[]> {
     const queryParams = new URLSearchParams()
-    if (params?.category) queryParams.append('category', toBackendCategory(params.category))
+    // style 파라미터
+    if (params?.category) queryParams.append('style', toBackendStyle(params.category))
+    // cask 파라미터
+    if (params?.cask) {
+      if (params.cask === 'Other') {
+        queryParams.append('cask', 'OTHER')
+      } else {
+        queryParams.append('cask', toBackendSubCategory(params.cask))
+      }
+    }
+    // nation 파라미터
+    if (params?.nation) queryParams.append('nation', params.nation)
     if (params?.search) queryParams.append('search', params.search)
-    if (params?.characteristic) queryParams.append('characteristic', toBackendSubCategory(params.characteristic))
     if (params?.page !== undefined) queryParams.append('page', String(params.page))
     if (params?.size !== undefined) queryParams.append('size', String(params.size))
     if (params?.sort) queryParams.append('sort', params.sort)

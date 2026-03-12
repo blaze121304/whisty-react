@@ -6,8 +6,8 @@ import { useState } from 'react'
 const whiskeyCategories: Array<{ value: WhiskeyCategory | 'whiskey-all'; label: string }> = [
   { value: 'whiskey-all', label: '전체' },
   { value: 'Single Malt', label: '싱글몰트' },
-  { value: 'Blended Malt', label: '블렌디드' },
-  { value: 'World Whiskey', label: '월드위스키' },
+  { value: 'Blended', label: '블렌디드' },
+  { value: 'Grain/Bourbon/Rye', label: '그레인/버번/라이' },
 ]
 
 const spiritCategories: Array<{ value: WhiskeyCategory | 'spirit-all'; label: string }> = [
@@ -15,13 +15,14 @@ const spiritCategories: Array<{ value: WhiskeyCategory | 'spirit-all'; label: st
   { value: 'Gin & Vodka', label: '진/보드카' },
   { value: 'Wine & Liqueur', label: '와인/리큐어' },
   { value: 'Sake & Traditional', label: '사케/전통주' },
-  { value: 'Beer', label: '맥주' },
+  { value: 'Beer & Soju', label: '맥주/소주' },
 ]
 
 const whiskeySubCategories: Array<{ value: WhiskeySubCategory; label: string }> = [
-  { value: 'Sherry', label: '셰리' },
+  { value: 'Sherry', label: '셰리 캐스크' },
+  { value: 'Bourbon', label: '버번 캐스크' },
+  { value: 'Wine/Port', label: '와인/포트' },
   { value: 'Peat', label: '피트' },
-  { value: 'Bourbon', label: '버번' },
 ]
 
 export function CategorySidebar({
@@ -36,12 +37,12 @@ export function CategorySidebar({
   onSubCategorySelect?: (v: WhiskeySubCategory | 'all' | undefined) => void
 }) {
   const isWhiskeyCategory = (cat: WhiskeyCategory): boolean => {
-    // 셰리/피트/버번 서브 특성을 사용하는 카테고리만 위스키 상세 검색 대상으로 간주 (블렌디드는 제외)
-    return cat === 'Single Malt' || cat === 'World Whiskey'
+    // 셰리/버번/와인포트/피트 특성을 사용하는 메인 카테고리는 싱글몰트만
+    return cat === 'Single Malt'
   }
 
   const isSpiritCategory = (cat: WhiskeyCategory): boolean => {
-    return cat === 'Gin & Vodka' || cat === 'Wine & Liqueur' || cat === 'Sake & Traditional' || cat === 'Beer'
+    return cat === 'Gin & Vodka' || cat === 'Wine & Liqueur' || cat === 'Sake & Traditional' || cat === 'Beer & Soju'
   }
 
   const isSelected = (value: string) => {
@@ -66,8 +67,8 @@ export function CategorySidebar({
   }
 
   const isWhiskeyCategorySelected = (cat: WhiskeyCategory): boolean => {
-    // 셰리/피트/버번 서브 특성을 사용하는 카테고리만 위스키 상세 검색 대상으로 간주 (블렌디드는 제외)
-    return cat === 'Single Malt' || cat === 'World Whiskey'
+    // 셰리/버번/와인포트/피트 특성을 사용하는 메인 카테고리는 싱글몰트만
+    return cat === 'Single Malt'
   }
 
   return (

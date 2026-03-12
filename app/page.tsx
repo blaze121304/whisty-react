@@ -14,7 +14,7 @@ export default function HomePage() {
   const [whiskeys, setWhiskeys] = useState<Whiskey[]>([])
   const [loading, setLoading] = useState(true)
   const [typeFilter, setTypeFilter] = useState<'all' | WhiskeyCategory | 'whiskey-all' | 'spirit-all'>('all')
-  const [subCategoryFilter, setSubCategoryFilter] = useState<'all' | 'Sherry' | 'Peat' | 'Bourbon' | undefined>(undefined)
+  const [subCategoryFilter, setSubCategoryFilter] = useState<'all' | WhiskeySubCategory | 'Other' | undefined>(undefined)
   const [nameSearch, setNameSearch] = useState<string>('')
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isEditFormOpen, setIsEditFormOpen] = useState(false)
@@ -24,12 +24,22 @@ export default function HomePage() {
 
   useEffect(() => {
     loadWhiskeys()
-  }, [])
+  }, [typeFilter, subCategoryFilter, nameSearch])
 
   const loadWhiskeys = async () => {
     try {
       setLoading(true)
-      const data = await getAllWhiskeys()
+      // style/cask/nation/search 조합으로 백엔드에서 필터링
+      const data = await getAllWhiskeys({
+        category: typeFilter === 'all' || typeFilter === 'whiskey-all' || typeFilter === 'spirit-all'
+          ? undefined
+          : typeFilter,
+        cask:
+          subCategoryFilter && subCategoryFilter !== 'all'
+            ? (subCategoryFilter as WhiskeySubCategory | 'Other')
+            : undefined,
+        search: nameSearch || undefined,
+      })
       setWhiskeys(data)
     } catch (error) {
       console.error('Failed to load whiskeys:', error)
@@ -40,38 +50,16 @@ export default function HomePage() {
   }
 
   const filtered = useMemo(() => {
+    // 대부분의 필터링은 백엔드에서 처리하고, 프론트에서는 최소한의 이름 검색만 보정
     return whiskeys.filter((w) => {
-      let inType = true
-      
-      if (typeFilter === 'all') {
-        inType = true
-      } else if (typeFilter === 'whiskey-all') {
-        // 위스키 그룹 전체
-        inType = w.category === 'Single Malt' || w.category === 'Blended Malt' || w.category === 'World Whiskey'
-      } else if (typeFilter === 'spirit-all') {
-        // 스피릿/기타 그룹 전체
-        inType = w.category === 'Gin & Vodka' || w.category === 'Wine & Liqueur' || w.category === 'Sake & Traditional' || w.category === 'Beer'
-      } else {
-        // 개별 카테고리
-        inType = w.category === typeFilter
-      }
-      
-      // 위스키 상세 검색 필터링 (싱글몰트, 월드위스키) - 블렌디드는 셰리/피트/버번 구분 없음
-      if ((typeFilter === 'Single Malt' || typeFilter === 'World Whiskey') && subCategoryFilter && subCategoryFilter !== 'all') {
-        // subCategories 배열 또는 subCategory (하위 호환성)에서 체크
-        const subCats = w.subCategories && w.subCategories.length > 0 
-          ? w.subCategories 
-          : (w.subCategory ? [w.subCategory] : [])
-        inType = inType && subCats.includes(subCategoryFilter as WhiskeySubCategory)
-      }
-      
-      const inName = nameSearch.trim() === '' 
-        ? true 
-        : w.name.toLowerCase().includes(nameSearch.toLowerCase()) || 
-          w.brand.toLowerCase().includes(nameSearch.toLowerCase())
-      return inType && inName
+      const inName =
+        nameSearch.trim() === ''
+          ? true
+          : w.name.toLowerCase().includes(nameSearch.toLowerCase()) ||
+            w.brand.toLowerCase().includes(nameSearch.toLowerCase())
+      return inName
     })
-  }, [whiskeys, typeFilter, subCategoryFilter, nameSearch])
+  }, [whiskeys, nameSearch])
 
   return (
     <motion.main
