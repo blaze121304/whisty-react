@@ -33,8 +33,8 @@ export function CategorySidebar({
 }: {
   selected: 'all' | WhiskeyCategory | 'whiskey-all' | 'spirit-all'
   onSelect: (v: 'all' | WhiskeyCategory | 'whiskey-all' | 'spirit-all') => void
-  subCategory?: WhiskeySubCategory | 'all'
-  onSubCategorySelect?: (v: WhiskeySubCategory | 'all' | undefined) => void
+  subCategory?: WhiskeySubCategory | 'all' | 'Other'
+  onSubCategorySelect?: (v: WhiskeySubCategory | 'all' | 'Other' | undefined) => void
 }) {
   const isWhiskeyCategory = (cat: WhiskeyCategory): boolean => {
     // 셰리/버번/와인포트/피트 특성을 사용하는 메인 카테고리는 싱글몰트만
