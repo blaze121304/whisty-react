@@ -165,8 +165,8 @@ export default function WhiskeyDetailPage() {
                       {item.category}
                     </span>
                   </div>
-                  {/* 오른쪽 상단: 서브카테고리 태그 */}
-                  {((item.subCategories && item.subCategories.length > 0) || item.subCategory) && (
+                  {/* 오른쪽 상단: 캐스크 특성 태그 (싱글몰트만 표시, 블렌디드·그레인/버번/라이 제외) */}
+                  {item.category === 'Single Malt' && ((item.subCategories && item.subCategories.length > 0) || item.subCategory) && (
                     <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end max-w-[50%] z-10">
                       {(() => {
                         const subCats = item.subCategories && item.subCategories.length > 0 

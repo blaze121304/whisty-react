@@ -86,7 +86,8 @@ export function BentoGrid({ items }: { items: Whiskey[] }) {
                   </div>
                 </div>
                 <div className="p-4">
-                  {(w.subCategories && w.subCategories.length > 0) || w.subCategory ? (
+                  {/* 캐스크 특성 뱃지는 싱글몰트만 표시 (블렌디드·그레인/버번/라이는 “캐스크 종류”가 아님) */}
+                  {w.category === 'Single Malt' && ((w.subCategories && w.subCategories.length > 0) || w.subCategory) ? (
                     <div className="mb-2 flex flex-wrap gap-1">
                       {(() => {
                         const subCats = w.subCategories && w.subCategories.length > 0 

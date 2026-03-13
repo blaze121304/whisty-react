@@ -29,15 +29,17 @@ function toBackendStyle(category: WhiskeyCategory): string {
 // 카테고리 변환 함수 (백엔드 -> 프론트엔드)
 function fromBackendCategory(category: string): WhiskeyCategory {
   const mapping: Record<string, WhiskeyCategory> = {
-    'SINGLE_MALT': 'Single Malt',
-    'BLENDED': 'Blended',
-    'GRAIN_BOURBON_RYE': 'Grain/Bourbon/Rye',
-    'GIN_VODKA': 'Gin & Vodka',
-    'WINE_LIQUEUR': 'Wine & Liqueur',
-    'SAKE_TRADITIONAL': 'Sake & Traditional',
-    'BEER_SOJU': 'Beer & Soju',
+    SINGLE_MALT: 'Single Malt',
+    BLENDED: 'Blended',
+    GRAIN_BOURBON_RYE: 'Grain/Bourbon/Rye',
+    WORLD_WHISKEY: 'Grain/Bourbon/Rye',
+    GIN_VODKA: 'Gin & Vodka',
+    WINE_LIQUEUR: 'Wine & Liqueur',
+    SAKE_TRADITIONAL: 'Sake & Traditional',
+    BEER_SOJU: 'Beer & Soju',
   }
-  return mapping[category] || category as WhiskeyCategory
+  const key = category != null ? String(category).toUpperCase().trim() : ''
+  return mapping[key] ?? (category as WhiskeyCategory)
 }
 
 // 서브카테고리/characteristic 변환 함수
@@ -61,21 +63,26 @@ function fromBackendSubCategory(subCategory: string): string {
   return mapping[subCategory] || subCategory
 }
 
+// 캐스크 뱃지 비표시: Blended, Grain/Bourbon/Rye 는 "캐스크 종류"가 아니므로 characteristics 미사용
+const CASK_HIDDEN_CATEGORIES: WhiskeyCategory[] = ['Blended', 'Grain/Bourbon/Rye']
+
 // 백엔드 응답을 프론트엔드 타입으로 변환
 function transformWhiskey(backendWhiskey: any): Whiskey {
-  // 백엔드 스펙: characteristics 필드에 SHERRY/PEAT/BOURBON 배열로 내려옴
-  const backendCharacteristics: string[] | undefined =
-    backendWhiskey.characteristics ?? backendWhiskey.subCategories
+  const category = fromBackendCategory(backendWhiskey.category)
+  const skipCask = CASK_HIDDEN_CATEGORIES.includes(category)
+  const backendCharacteristics: string[] | undefined = skipCask
+    ? undefined
+    : (backendWhiskey.characteristics ?? backendWhiskey.subCategories)
+  const subCategories = backendCharacteristics?.map((sc: string) => fromBackendSubCategory(sc) as any)
 
   return {
     id: String(backendWhiskey.id),
     name: backendWhiskey.name,
     englishName: backendWhiskey.englishName,
     brand: backendWhiskey.brand,
-    category: fromBackendCategory(backendWhiskey.category),
-    subCategories: backendCharacteristics?.map((sc: string) => fromBackendSubCategory(sc) as any),
-    // 단일 subCategory는 하위 호환용 (기존 로컬스토리지 시드 등)
-    subCategory: backendWhiskey.subCategory
+    category,
+    subCategories: subCategories?.length ? subCategories : undefined,
+    subCategory: backendWhiskey.subCategory && !skipCask
       ? (fromBackendSubCategory(backendWhiskey.subCategory) as any)
       : undefined,
     abv: backendWhiskey.abv,
