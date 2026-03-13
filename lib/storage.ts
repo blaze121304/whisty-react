@@ -1,13 +1,23 @@
 "use client"
-import { Whiskey } from './types'
+import { Whiskey, WhiskeyCategory, WhiskeySubCategory } from './types'
 import { whiskeyApi } from './api'
 
 // API 기반으로 변경된 storage 함수들
 // 기존 코드와의 호환성을 위해 함수 시그니처는 유지
 
-export async function getAllWhiskeys(): Promise<Whiskey[]> {
+export type GetAllWhiskeysParams = {
+  category?: WhiskeyCategory
+  search?: string
+  cask?: WhiskeySubCategory | 'Other'
+  nation?: string
+  page?: number
+  size?: number
+  sort?: string
+}
+
+export async function getAllWhiskeys(params?: GetAllWhiskeysParams): Promise<Whiskey[]> {
   try {
-    return await whiskeyApi.getAll()
+    return await whiskeyApi.getAll(params)
   } catch (error) {
     console.error('Failed to fetch whiskeys:', error)
     return []
