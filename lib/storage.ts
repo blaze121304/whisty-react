@@ -40,7 +40,7 @@ export async function upsertWhiskey(item: Partial<Whiskey>, imageFile?: File): P
       await whiskeyApi.create(item, imageFile)
     }
     // 업데이트된 목록 반환
-    return await getAllWhiskeys()
+    return await getAllWhiskeys({ size: 500 })
   } catch (error) {
     console.error('Failed to upsert whiskey:', error)
     throw error
@@ -60,7 +60,7 @@ export async function deleteWhiskey(id: string): Promise<Whiskey[]> {
   try {
     await whiskeyApi.delete(id)
     // 삭제 후 목록 반환
-    return await getAllWhiskeys()
+    return await getAllWhiskeys({ size: 500 })
   } catch (error) {
     console.error('Failed to delete whiskey:', error)
     throw error

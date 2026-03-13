@@ -39,6 +39,7 @@ export default function HomePage() {
             ? (subCategoryFilter as WhiskeySubCategory | 'Other')
             : undefined,
         search: nameSearch || undefined,
+        size: 500,
       })
       setWhiskeys(data)
     } catch (error) {
