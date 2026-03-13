@@ -40,8 +40,8 @@ export function BentoGrid({ items }: { items: Whiskey[] }) {
         // 카테고리에 따른 텍스처 클래스 결정
         const getTextureClass = (category: string) => {
           if (category === 'Single Malt') return 'whiskey-card-linen'
-          if (category === 'World Whiskey') return 'whiskey-card-felt'
-          if (category === 'Blended Malt') return 'whiskey-card-linen'
+          if (category === 'Grain/Bourbon/Rye') return 'whiskey-card-felt'
+          if (category === 'Blended') return 'whiskey-card-linen'
           return 'whiskey-card-default'
         }
 
@@ -100,12 +100,14 @@ export function BentoGrid({ items }: { items: Whiskey[] }) {
                                 ? 'bg-[#800020]/70 text-white dark:bg-[#800020]/50'
                                 : subCat === 'Peat'
                                 ? 'bg-[#3D2817]/70 text-white dark:bg-[#3D2817]/50'
-                                :                               subCat === 'Bourbon'
+                                : subCat === 'Bourbon'
                                 ? 'bg-[#FFD700]/70 text-amber-900 dark:bg-[#FFD700]/50 dark:text-amber-900'
+                                : subCat === 'Wine/Port'
+                                ? 'bg-[#722F37]/70 text-white dark:bg-[#722F37]/50'
                                 : ''
                             }`}
                           >
-                            {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : subCat === 'Bourbon' ? '버번' : subCat}
+                            {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : subCat === 'Bourbon' ? '버번' : subCat === 'Wine/Port' ? '와인/포트' : subCat}
                           </span>
                         ))
                       })()}

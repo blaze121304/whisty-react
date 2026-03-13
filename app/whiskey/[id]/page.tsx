@@ -40,7 +40,7 @@ export default function WhiskeyDetailPage() {
   // 위스키 생산 지역 추론 함수
   const getWhiskeyRegion = (whiskey: Whiskey): string => {
     // 스코틀랜드 위스키가 아닌 경우
-    if (whiskey.category !== 'Single Malt' && whiskey.category !== 'Blended Malt') {
+    if (whiskey.category !== 'Single Malt' && whiskey.category !== 'Blended') {
       return '-'
     }
 
@@ -90,8 +90,8 @@ export default function WhiskeyDetailPage() {
       return 'Lowland'
     }
 
-    // Blended Malt의 경우 일반적으로 여러 지역 혼합
-    if (whiskey.category === 'Blended Malt') {
+    // Blended의 경우 일반적으로 여러 지역 혼합
+    if (whiskey.category === 'Blended') {
       return 'Blended'
     }
 
@@ -182,10 +182,12 @@ export default function WhiskeyDetailPage() {
                                 ? 'bg-[#3D2817]/70 text-white dark:bg-[#3D2817]/50'
                                 : subCat === 'Bourbon'
                                 ? 'bg-[#FFD700]/70 text-amber-900 dark:bg-[#FFD700]/50 dark:text-amber-900'
+                                : subCat === 'Wine/Port'
+                                ? 'bg-[#722F37]/70 text-white dark:bg-[#722F37]/50'
                                 : ''
                             }`}
                           >
-                            {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : subCat === 'Bourbon' ? '버번' : subCat}
+                            {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : subCat === 'Bourbon' ? '버번' : subCat === 'Wine/Port' ? '와인/포트' : subCat}
                           </span>
                         ))
                       })()}
@@ -278,12 +280,12 @@ export default function WhiskeyDetailPage() {
                   <div className="detail-item bento p-4">
                     <span className="label block text-xs text-amber-900/60 dark:text-white/60 mb-1">Nation</span>
                     <span className="value text-lg font-semibold text-foreground dark:text-foreground">
-                      {item.nation || (item.category === 'Single Malt' || item.category === 'Blended Malt' ? 'Scotland' : 
-                       item.category === 'World Whiskey' ? 'World' : 
+                      {item.nation || (item.category === 'Single Malt' || item.category === 'Blended' ? 'Scotland' : 
+                       item.category === 'Grain/Bourbon/Rye' ? 'Various' : 
                        item.category === 'Gin & Vodka' ? 'Various' :
                        item.category === 'Wine & Liqueur' ? 'Various' :
                        item.category === 'Sake & Traditional' ? 'Japan/Korea' :
-                       item.category === 'Beer' ? 'Various' : 'Unknown')}
+                       item.category === 'Beer & Soju' ? 'Various' : 'Unknown')}
                     </span>
                   </div>
                 </div>

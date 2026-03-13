@@ -65,7 +65,7 @@ function addSubCategories(list: Whiskey[]): { changed: boolean; list: Whiskey[] 
   
   const next = list.map((w) => {
     // 위스키 카테고리이고 subCategory가 없는 경우에만 추가
-    if ((w.category === 'Single Malt' || w.category === 'Blended Malt' || w.category === 'World Whiskey') && !w.subCategory) {
+    if ((w.category === 'Single Malt' || w.category === 'Blended' || w.category === 'Grain/Bourbon/Rye') && !w.subCategory) {
       const subCat = subCategoryMap[w.name]
       if (subCat) {
         changed = true
@@ -131,26 +131,26 @@ export function generateSeedData(): Whiskey[] {
     { name: '발베니 더블우드 12', englishName: "The Balvenie DoubleWood 12", brand: 'Balvenie', category: 'Single Malt', subCategory: 'Sherry', url: 'https://images.unsplash.com/photo-1617191481852-2fef946b6f11?q=80&w=1200&auto=format&fit=crop' },
     { name: '글렌모렌지 오리지널 10', englishName: 'Glenmorangie Original 10', brand: 'Glenmorangie', category: 'Single Malt', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191518478-6fe59de0b9e5?q=80&w=1200&auto=format&fit=crop' },
     { name: '아칸토션 12', englishName: 'Auchentoshan 12', brand: 'Auchentoshan', category: 'Single Malt', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1613478223729-2c0d2db569f5?q=80&w=1200&auto=format&fit=crop' },
-    // Blended Malt (8)
-    { name: '조니워커 블랙', englishName: 'Johnnie Walker Black', brand: 'Johnnie Walker', category: 'Blended Malt', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1527161153336-2d3d2d50fd6b?q=80&w=1200&auto=format&fit=crop' },
-    { name: '조니워커 그린', englishName: 'Johnnie Walker Green', brand: 'Johnnie Walker', category: 'Blended Malt', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1527161153336-2d3d2d50fd6c?q=80&w=1200&auto=format&fit=crop' },
-    { name: '치바사 12', englishName: 'Chivas Regal 12', brand: 'Chivas', category: 'Blended Malt', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1574096079513-8d0d2b6a1bff?q=80&w=1200&auto=format&fit=crop' },
-    { name: '치바사 18', englishName: 'Chivas Regal 18', brand: 'Chivas', category: 'Blended Malt', subCategory: 'Sherry', url: 'https://images.unsplash.com/photo-1574096079513-8d0d2b6a1bfe?q=80&w=1200&auto=format&fit=crop' },
-    { name: '발렌타인 12', englishName: "Ballantine's 12", brand: "Ballantine's", category: 'Blended Malt', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191518479-6fe59de0b9e6?q=80&w=1200&auto=format&fit=crop' },
-    { name: '발렌타인 17', englishName: "Ballantine's 17", brand: "Ballantine's", category: 'Blended Malt', subCategory: 'Sherry', url: 'https://images.unsplash.com/photo-1617191518480-6fe59de0b9e7?q=80&w=1200&auto=format&fit=crop' },
-    { name: '듀어스 12', englishName: "Dewar's 12", brand: "Dewar's", category: 'Blended Malt', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191518481-6fe59de0b9e8?q=80&w=1200&auto=format&fit=crop' },
-    { name: '니카 프롬 더 배럴', englishName: 'Nikka From The Barrel', brand: 'Nikka', category: 'Blended Malt', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481861-3a27c8c1a1df?q=80&w=1200&auto=format&fit=crop' },
-    // World Whiskey - Taiwan/Japan (10)
-    { name: '카발란 클래식', englishName: 'Kavalan Classic', brand: 'Kavalan', category: 'World Whiskey', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481862-3a27c8c1a1e0?q=80&w=1200&auto=format&fit=crop' },
-    { name: '카발란 콘서트마스터', englishName: 'Kavalan Concertmaster', brand: 'Kavalan', category: 'World Whiskey', subCategory: 'Sherry', url: 'https://images.unsplash.com/photo-1617191481863-3a27c8c1a1e1?q=80&w=1200&auto=format&fit=crop' },
-    { name: '카발란 솔리스트 셰리', englishName: 'Kavalan Solist Sherry', brand: 'Kavalan', category: 'World Whiskey', subCategory: 'Sherry', url: 'https://images.unsplash.com/photo-1617191481864-3a27c8c1a1e2?q=80&w=1200&auto=format&fit=crop' },
-    { name: '야마자키 12', englishName: 'Yamazaki 12', brand: 'Suntory', category: 'World Whiskey', subCategory: 'Sherry', url: 'https://images.unsplash.com/photo-1590152007943-983b2981512a?q=80&w=1200&auto=format&fit=crop' },
-    { name: '하쿠슈 디스틸러스 리저브', englishName: "Hakushu Distiller's Reserve", brand: 'Suntory', category: 'World Whiskey', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1590152007943-983b2981512b?q=80&w=1200&auto=format&fit=crop' },
-    { name: '니카 코피 그레인', englishName: 'Nikka Coffey Grain', brand: 'Nikka', category: 'World Whiskey', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481865-3a27c8c1a1e3?q=80&w=1200&auto=format&fit=crop' },
-    { name: '요이치 싱글몰트', englishName: 'Yoichi Single Malt', brand: 'Nikka', category: 'World Whiskey', subCategory: 'Peat', url: 'https://images.unsplash.com/photo-1617191481866-3a27c8c1a1e4?q=80&w=1200&auto=format&fit=crop' },
-    { name: '미야기쿄 싱글몰트', englishName: 'Miyagikyo Single Malt', brand: 'Nikka', category: 'World Whiskey', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481867-3a27c8c1a1e5?q=80&w=1200&auto=format&fit=crop' },
-    { name: '이와이 트래디션', englishName: 'Iwai Tradition', brand: 'Mars', category: 'World Whiskey', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481868-3a27c8c1a1e6?q=80&w=1200&auto=format&fit=crop' },
-    { name: '아카시 화이트 오크', englishName: 'Akashi White Oak', brand: 'Eigashima', category: 'World Whiskey', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481869-3a27c8c1a1e7?q=80&w=1200&auto=format&fit=crop' },
+    // Blended (8)
+    { name: '조니워커 블랙', englishName: 'Johnnie Walker Black', brand: 'Johnnie Walker', category: 'Blended', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1527161153336-2d3d2d50fd6b?q=80&w=1200&auto=format&fit=crop' },
+    { name: '조니워커 그린', englishName: 'Johnnie Walker Green', brand: 'Johnnie Walker', category: 'Blended', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1527161153336-2d3d2d50fd6c?q=80&w=1200&auto=format&fit=crop' },
+    { name: '치바사 12', englishName: 'Chivas Regal 12', brand: 'Chivas', category: 'Blended', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1574096079513-8d0d2b6a1bff?q=80&w=1200&auto=format&fit=crop' },
+    { name: '치바사 18', englishName: 'Chivas Regal 18', brand: 'Chivas', category: 'Blended', subCategory: 'Sherry', url: 'https://images.unsplash.com/photo-1574096079513-8d0d2b6a1bfe?q=80&w=1200&auto=format&fit=crop' },
+    { name: '발렌타인 12', englishName: "Ballantine's 12", brand: "Ballantine's", category: 'Blended', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191518479-6fe59de0b9e6?q=80&w=1200&auto=format&fit=crop' },
+    { name: '발렌타인 17', englishName: "Ballantine's 17", brand: "Ballantine's", category: 'Blended', subCategory: 'Sherry', url: 'https://images.unsplash.com/photo-1617191518480-6fe59de0b9e7?q=80&w=1200&auto=format&fit=crop' },
+    { name: '듀어스 12', englishName: "Dewar's 12", brand: "Dewar's", category: 'Blended', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191518481-6fe59de0b9e8?q=80&w=1200&auto=format&fit=crop' },
+    { name: '니카 프롬 더 배럴', englishName: 'Nikka From The Barrel', brand: 'Nikka', category: 'Blended', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481861-3a27c8c1a1df?q=80&w=1200&auto=format&fit=crop' },
+    // Grain/Bourbon/Rye - Taiwan/Japan etc (10)
+    { name: '카발란 클래식', englishName: 'Kavalan Classic', brand: 'Kavalan', category: 'Grain/Bourbon/Rye', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481862-3a27c8c1a1e0?q=80&w=1200&auto=format&fit=crop' },
+    { name: '카발란 콘서트마스터', englishName: 'Kavalan Concertmaster', brand: 'Kavalan', category: 'Grain/Bourbon/Rye', subCategory: 'Sherry', url: 'https://images.unsplash.com/photo-1617191481863-3a27c8c1a1e1?q=80&w=1200&auto=format&fit=crop' },
+    { name: '카발란 솔리스트 셰리', englishName: 'Kavalan Solist Sherry', brand: 'Kavalan', category: 'Grain/Bourbon/Rye', subCategory: 'Sherry', url: 'https://images.unsplash.com/photo-1617191481864-3a27c8c1a1e2?q=80&w=1200&auto=format&fit=crop' },
+    { name: '야마자키 12', englishName: 'Yamazaki 12', brand: 'Suntory', category: 'Grain/Bourbon/Rye', subCategory: 'Sherry', url: 'https://images.unsplash.com/photo-1590152007943-983b2981512a?q=80&w=1200&auto=format&fit=crop' },
+    { name: '하쿠슈 디스틸러스 리저브', englishName: "Hakushu Distiller's Reserve", brand: 'Suntory', category: 'Grain/Bourbon/Rye', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1590152007943-983b2981512b?q=80&w=1200&auto=format&fit=crop' },
+    { name: '니카 코피 그레인', englishName: 'Nikka Coffey Grain', brand: 'Nikka', category: 'Grain/Bourbon/Rye', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481865-3a27c8c1a1e3?q=80&w=1200&auto=format&fit=crop' },
+    { name: '요이치 싱글몰트', englishName: 'Yoichi Single Malt', brand: 'Nikka', category: 'Grain/Bourbon/Rye', subCategory: 'Peat', url: 'https://images.unsplash.com/photo-1617191481866-3a27c8c1a1e4?q=80&w=1200&auto=format&fit=crop' },
+    { name: '미야기쿄 싱글몰트', englishName: 'Miyagikyo Single Malt', brand: 'Nikka', category: 'Grain/Bourbon/Rye', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481867-3a27c8c1a1e5?q=80&w=1200&auto=format&fit=crop' },
+    { name: '이와이 트래디션', englishName: 'Iwai Tradition', brand: 'Mars', category: 'Grain/Bourbon/Rye', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481868-3a27c8c1a1e6?q=80&w=1200&auto=format&fit=crop' },
+    { name: '아카시 화이트 오크', englishName: 'Akashi White Oak', brand: 'Eigashima', category: 'Grain/Bourbon/Rye', subCategory: 'Bourbon', url: 'https://images.unsplash.com/photo-1617191481869-3a27c8c1a1e7?q=80&w=1200&auto=format&fit=crop' },
   ]
 
   // ensure 30 unique items

@@ -8,16 +8,16 @@ import { Select } from '@/components/ui/select'
 import { Whiskey, WhiskeyCategory, WhiskeySubCategory } from '@/lib/types'
 import { upsertWhiskey } from '@/lib/storage'
 
-const categories: WhiskeyCategory[] = ['Single Malt', 'Blended Malt', 'World Whiskey', 'Gin & Vodka', 'Wine & Liqueur', 'Sake & Traditional', 'Beer']
+const categories: WhiskeyCategory[] = ['Single Malt', 'Blended', 'Grain/Bourbon/Rye', 'Gin & Vodka', 'Wine & Liqueur', 'Sake & Traditional', 'Beer & Soju']
 
 const categoryLabels: Record<WhiskeyCategory, string> = {
   'Single Malt': '싱글몰트',
-  'Blended Malt': '블렌디드',
-  'World Whiskey': '월드위스키',
+  'Blended': '블렌디드',
+  'Grain/Bourbon/Rye': '그레인/버번/라이',
   'Gin & Vodka': '진&보드카',
   'Wine & Liqueur': '와인&리큐어',
   'Sake & Traditional': '사케/전통주',
-  'Beer': '맥주',
+  'Beer & Soju': '맥주/소주',
 }
 
 export function WhiskeyForm({ 
@@ -215,7 +215,7 @@ export function WhiskeyForm({
                     setCategory(e.target.value as WhiskeyCategory | '')
                     // 셰리/피트/버번 서브 특성을 사용하는 카테고리만 유지 (싱글몰트, 월드위스키)
                     const cat = e.target.value as WhiskeyCategory | ''
-                    if (cat !== 'Single Malt' && cat !== 'World Whiskey') {
+                    if (cat !== 'Single Malt') {
                       setSubCategories([])
                     }
                   }}
@@ -280,11 +280,11 @@ export function WhiskeyForm({
               />
             </div>
             {/* 셰리/피트/버번 체크박스 - 블렌디드를 제외한 위스키 카테고리(싱글몰트, 월드위스키)에서만 표시 */}
-            {(category === 'Single Malt' || category === 'World Whiskey') && (
+            {category === 'Single Malt' && (
               <div>
                 <Label>특성 (선택)</Label>
                 <div className="mt-2 flex flex-wrap gap-4">
-                  {(['Sherry', 'Peat', 'Bourbon'] as WhiskeySubCategory[]).map((subCat) => (
+                  {(['Sherry', 'Bourbon', 'Wine/Port', 'Peat'] as WhiskeySubCategory[]).map((subCat) => (
                     <label key={subCat} className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
@@ -299,7 +299,7 @@ export function WhiskeyForm({
                         className="w-4 h-4 rounded border-amber-900/20 dark:border-white/20 text-amber-600 focus:ring-amber-500 focus:ring-2"
                       />
                       <span className="text-sm text-foreground dark:text-foreground">
-                        {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : subCat === 'Bourbon' ? '버번' : subCat}
+                        {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : subCat === 'Bourbon' ? '버번' : subCat === 'Wine/Port' ? '와인/포트' : subCat}
                       </span>
                     </label>
                   ))}
