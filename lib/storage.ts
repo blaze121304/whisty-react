@@ -1,12 +1,12 @@
 "use client"
-import { Whiskey, WhiskeyCategory, WhiskeySubCategory } from './types'
-import { whiskeyApi } from './api'
+import { Whiskey, WhiskeySubCategory } from './types'
+import { whiskeyApi, type StyleQuery } from './api'
 
 // API 기반으로 변경된 storage 함수들
 // 기존 코드와의 호환성을 위해 함수 시그니처는 유지
 
 export type GetAllWhiskeysParams = {
-  category?: WhiskeyCategory
+  style?: StyleQuery
   search?: string
   cask?: WhiskeySubCategory | 'Other'
   nation?: string

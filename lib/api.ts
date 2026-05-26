@@ -149,11 +149,22 @@ class ApiError extends Error {
   }
 }
 
+/** 목록 API style 쿼리: 미전송=위스키만, spirit-all→OTHER, 개별 카테고리→해당 style */
+export type StyleQuery = WhiskeyCategory | 'spirit-all'
+
+function appendStyleQuery(queryParams: URLSearchParams, style?: StyleQuery) {
+  if (!style || style === 'spirit-all') {
+    if (style === 'spirit-all') queryParams.append('style', 'OTHER')
+    return
+  }
+  queryParams.append('style', toBackendStyle(style))
+}
+
 // API 클라이언트
 export const whiskeyApi = {
   // 전체 위스키 목록 조회
   async getAll(params?: {
-    category?: WhiskeyCategory   // UI 스타일 필터
+    style?: StyleQuery
     search?: string
     cask?: WhiskeySubCategory | 'Other'
     nation?: string
@@ -162,8 +173,7 @@ export const whiskeyApi = {
     sort?: string
   }): Promise<Whiskey[]> {
     const queryParams = new URLSearchParams()
-    // style 파라미터
-    if (params?.category) queryParams.append('style', toBackendStyle(params.category))
+    appendStyleQuery(queryParams, params?.style)
     // cask 파라미터
     if (params?.cask) {
       if (params.cask === 'Other') {

@@ -31,9 +31,13 @@ export default function HomePage() {
       setLoading(true)
       // style/cask/nation/search 조합으로 백엔드에서 필터링
       const data = await getAllWhiskeys({
-        category: typeFilter === 'all' || typeFilter === 'whiskey-all' || typeFilter === 'spirit-all'
-          ? undefined
-          : typeFilter,
+        // style 미전송 → 위스키만 | spirit-all → style=OTHER | 개별 카테고리 → 해당 style
+        style:
+          typeFilter === 'spirit-all'
+            ? 'spirit-all'
+            : typeFilter === 'all' || typeFilter === 'whiskey-all'
+              ? undefined
+              : typeFilter,
         cask:
           subCategoryFilter && subCategoryFilter !== 'all'
             ? (subCategoryFilter as WhiskeySubCategory | 'Other')
