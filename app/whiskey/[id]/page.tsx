@@ -159,18 +159,18 @@ export default function WhiskeyDetailPage() {
               >
                 <div className="bento overflow-hidden relative rounded-xl mb-4 min-h-[calc(85.5%+1rem)]">
                   {renderImage()}
-                  {/* 왼쪽 상단: 카테고리 태그 */}
+                  {/* 좌상단: 몰트 종류 */}
                   <div className="absolute top-2 left-2 z-10">
                     <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium border border-white/10 shadow-sm bg-white/70 text-amber-900 backdrop-blur-sm dark:bg-black/50 dark:text-amber-100">
                       {item.category}
                     </span>
                   </div>
-                  {/* 오른쪽 상단: 캐스크 특성 태그 (싱글몰트만 표시, 블렌디드·그레인/버번/라이 제외) */}
+                  {/* 우상단: 캐스크 특성 (싱글몰트만) */}
                   {item.category === 'Single Malt' && ((item.subCategories && item.subCategories.length > 0) || item.subCategory) && (
                     <div className="absolute top-2 right-2 flex flex-wrap gap-1 justify-end max-w-[50%] z-10">
                       {(() => {
-                        const subCats = item.subCategories && item.subCategories.length > 0 
-                          ? item.subCategories 
+                        const subCats = item.subCategories && item.subCategories.length > 0
+                          ? item.subCategories
                           : (item.subCategory ? [item.subCategory] : [])
                         return subCats.map((subCat, idx) => (
                           <span

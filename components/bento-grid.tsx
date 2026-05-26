@@ -62,6 +62,33 @@ export function BentoGrid({ items }: { items: Whiskey[] }) {
                       {w.category}
                     </span>
                   </div>
+                  {w.category === 'Single Malt' && ((w.subCategories && w.subCategories.length > 0) || w.subCategory) ? (
+                    <div className="absolute top-2 right-2 z-10 flex flex-wrap gap-1 justify-end max-w-[50%]">
+                      {(w.subCategories && w.subCategories.length > 0
+                        ? w.subCategories
+                        : w.subCategory
+                          ? [w.subCategory]
+                          : []
+                      ).map((subCat, idx) => (
+                        <span
+                          key={idx}
+                          className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium border border-white/10 shadow-sm backdrop-blur-sm ${
+                            subCat === 'Sherry'
+                              ? 'bg-[#800020]/70 text-white dark:bg-[#800020]/50'
+                              : subCat === 'Peat'
+                              ? 'bg-[#3D2817]/70 text-white dark:bg-[#3D2817]/50'
+                              : subCat === 'Bourbon'
+                              ? 'bg-[#FFD700]/70 text-amber-900 dark:bg-[#FFD700]/50 dark:text-amber-900'
+                              : subCat === 'Wine/Port'
+                              ? 'bg-[#722F37]/70 text-white dark:bg-[#722F37]/50'
+                              : ''
+                          }`}
+                        >
+                          {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : subCat === 'Bourbon' ? '버번' : subCat === 'Wine/Port' ? '와인/포트' : subCat}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
                   {/* 호버 오버레이 */}
                   <div className="card-overlay absolute inset-0 bg-black/70 dark:bg-black/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
                     {w.personalNote && (
@@ -86,39 +113,11 @@ export function BentoGrid({ items }: { items: Whiskey[] }) {
                   </div>
                 </div>
                 <div className="p-4">
-                  {/* 캐스크 특성 뱃지는 싱글몰트만 표시 (블렌디드·그레인/버번/라이는 “캐스크 종류”가 아님) */}
-                  {w.category === 'Single Malt' && ((w.subCategories && w.subCategories.length > 0) || w.subCategory) ? (
-                    <div className="mb-2 flex flex-wrap gap-1">
-                      {(() => {
-                        const subCats = w.subCategories && w.subCategories.length > 0 
-                          ? w.subCategories 
-                          : (w.subCategory ? [w.subCategory] : [])
-                        return subCats.map((subCat, idx) => (
-                          <span
-                            key={idx}
-                            className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium border border-white/10 shadow-sm backdrop-blur-sm ${
-                              subCat === 'Sherry'
-                                ? 'bg-[#800020]/70 text-white dark:bg-[#800020]/50'
-                                : subCat === 'Peat'
-                                ? 'bg-[#3D2817]/70 text-white dark:bg-[#3D2817]/50'
-                                : subCat === 'Bourbon'
-                                ? 'bg-[#FFD700]/70 text-amber-900 dark:bg-[#FFD700]/50 dark:text-amber-900'
-                                : subCat === 'Wine/Port'
-                                ? 'bg-[#722F37]/70 text-white dark:bg-[#722F37]/50'
-                                : ''
-                            }`}
-                          >
-                            {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : subCat === 'Bourbon' ? '버번' : subCat === 'Wine/Port' ? '와인/포트' : subCat}
-                          </span>
-                        ))
-                      })()}
-                    </div>
-                  ) : null}
                   <div className="whiskey-brand text-sm whitespace-normal break-words">{w.brand}</div>
-                  <div className="whiskey-name mt-1 text-foreground dark:text-foreground whitespace-normal break-words">{w.name}</div>
-                  {w.englishName && (
-                    <div className="mt-0.5 text-xs text-amber-900/60 dark:text-white/50 whitespace-normal break-words">{w.englishName}</div>
-                  )}
+                  <div className="whiskey-name mt-1 text-foreground dark:text-foreground">{w.name}</div>
+                  <div className="whiskey-english-name mt-0.5 text-amber-900/60 dark:text-white/50">
+                    {w.englishName ?? ''}
+                  </div>
                   {(w.abv != null || w.volume != null) && (
                     <div className="mt-2 flex items-center gap-2 text-xs text-amber-900/70 dark:text-white/60">
                       {w.abv != null && (
