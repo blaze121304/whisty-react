@@ -19,18 +19,15 @@ export function BentoGrid({ items }: { items: Whiskey[] }) {
         const ImageComponent = ({ imageUrl }: { imageUrl: string }) => {
           const [imageError, setImageError] = useState(false)
           const isExternalUrl = imageUrl.startsWith('http://') || imageUrl.startsWith('https://')
-          
-          if (imageError) {
-            return <div className="w-full aspect-[3/4] bg-gradient-to-br from-amber-900/40 to-amber-700/20" />
-          }
+
+          if (imageError) return null
 
           return (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={imageUrl}
               alt={w.name}
-              className="w-full object-cover"
-              style={{ aspectRatio: '3/4' }}
+              className="absolute inset-0 z-[1] h-full w-full object-contain"
               onError={() => setImageError(true)}
               {...(isExternalUrl && { crossOrigin: 'anonymous' })}
             />
@@ -52,11 +49,13 @@ export function BentoGrid({ items }: { items: Whiskey[] }) {
                 {/* 구리 호일 라인 */}
                 <div className="copper-foil-line-card" />
                 <div className="relative">
-                  {w.imageDataUrl ? (
-                    <ImageComponent imageUrl={w.imageDataUrl} />
-                  ) : (
-                    <div className="w-full aspect-[3/4] bg-gradient-to-br from-amber-900/40 to-amber-700/20" />
-                  )}
+                  <div className="relative w-full aspect-[3/4]">
+                    <div
+                      className="absolute inset-0 bg-gradient-to-br from-amber-900/40 to-amber-700/20"
+                      aria-hidden
+                    />
+                    {w.imageDataUrl ? <ImageComponent imageUrl={w.imageDataUrl} /> : null}
+                  </div>
                   <div className="absolute top-2 left-2 z-10">
                     <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium border border-white/10 shadow-sm bg-white/70 text-amber-900 backdrop-blur-sm dark:bg-black/50 dark:text-amber-100">
                       {w.category}
