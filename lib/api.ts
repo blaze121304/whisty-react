@@ -42,25 +42,27 @@ function fromBackendCategory(category: string): WhiskeyCategory {
   return mapping[key] ?? (category as WhiskeyCategory)
 }
 
-// 서브카테고리/characteristic 변환 함수
+// 서브카테고리/characteristic 변환 (SHERRY / BOURBON / PEAT 만 지원, WINE_PORT 제거)
+const BACKEND_CASK_VALUES = new Set(['SHERRY', 'PEAT', 'BOURBON'])
+
 function toBackendSubCategory(subCategory: string): string {
   const mapping: Record<string, string> = {
-    'Sherry': 'SHERRY',
-    'Peat': 'PEAT',
-    'Bourbon': 'BOURBON',
-    'Wine/Port': 'WINE_PORT',
+    Sherry: 'SHERRY',
+    Peat: 'PEAT',
+    Bourbon: 'BOURBON',
   }
   return mapping[subCategory] || subCategory
 }
 
-function fromBackendSubCategory(subCategory: string): string {
-  const mapping: Record<string, string> = {
-    'SHERRY': 'Sherry',
-    'PEAT': 'Peat',
-    'BOURBON': 'Bourbon',
-    'WINE_PORT': 'Wine/Port',
+function fromBackendSubCategory(subCategory: string): WhiskeySubCategory | null {
+  const key = String(subCategory).toUpperCase()
+  if (!BACKEND_CASK_VALUES.has(key)) return null
+  const mapping: Record<string, WhiskeySubCategory> = {
+    SHERRY: 'Sherry',
+    PEAT: 'Peat',
+    BOURBON: 'Bourbon',
   }
-  return mapping[subCategory] || subCategory
+  return mapping[key] ?? null
 }
 
 // 캐스크 뱃지 비표시: Blended, Grain/Bourbon/Rye 는 "캐스크 종류"가 아니므로 characteristics 미사용
@@ -73,7 +75,14 @@ function transformWhiskey(backendWhiskey: any): Whiskey {
   const backendCharacteristics: string[] | undefined = skipCask
     ? undefined
     : (backendWhiskey.characteristics ?? backendWhiskey.subCategories)
-  const subCategories = backendCharacteristics?.map((sc: string) => fromBackendSubCategory(sc) as any)
+  const subCategories = backendCharacteristics
+    ?.map((sc: string) => fromBackendSubCategory(sc))
+    .filter((sc): sc is WhiskeySubCategory => sc != null)
+
+  const legacySubCategory =
+    backendWhiskey.subCategory && !skipCask
+      ? fromBackendSubCategory(backendWhiskey.subCategory)
+      : null
 
   return {
     id: String(backendWhiskey.id),
@@ -82,9 +91,7 @@ function transformWhiskey(backendWhiskey: any): Whiskey {
     brand: backendWhiskey.brand,
     category,
     subCategories: subCategories?.length ? subCategories : undefined,
-    subCategory: backendWhiskey.subCategory && !skipCask
-      ? (fromBackendSubCategory(backendWhiskey.subCategory) as any)
-      : undefined,
+    subCategory: legacySubCategory ?? undefined,
     abv: backendWhiskey.abv,
     volume: backendWhiskey.volume,
     nation: backendWhiskey.nation,
@@ -113,7 +120,9 @@ function transformWhiskeyForBackend(whiskey: Partial<Whiskey>): any {
   if (whiskey.category !== undefined) result.category = toBackendStyle(whiskey.category)
   if (whiskey.subCategories !== undefined) {
     // 백엔드 스펙: characteristics 필드 사용
-    result.characteristics = whiskey.subCategories.map(sc => toBackendSubCategory(sc))
+    result.characteristics = whiskey.subCategories
+      .map((sc) => toBackendSubCategory(sc))
+      .filter((c) => BACKEND_CASK_VALUES.has(c))
   }
   if (whiskey.abv !== undefined) result.abv = whiskey.abv
   if (whiskey.volume !== undefined) result.volume = whiskey.volume

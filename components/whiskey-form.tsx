@@ -284,7 +284,7 @@ export function WhiskeyForm({
               <div>
                 <Label>특성 (선택)</Label>
                 <div className="mt-2 flex flex-wrap gap-4">
-                  {(['Sherry', 'Bourbon', 'Wine/Port', 'Peat'] as WhiskeySubCategory[]).map((subCat) => (
+                  {(['Sherry', 'Bourbon', 'Peat'] as WhiskeySubCategory[]).map((subCat) => (
                     <label key={subCat} className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
@@ -299,7 +299,7 @@ export function WhiskeyForm({
                         className="w-4 h-4 rounded border-amber-900/20 dark:border-white/20 text-amber-600 focus:ring-amber-500 focus:ring-2"
                       />
                       <span className="text-sm text-foreground dark:text-foreground">
-                        {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : subCat === 'Bourbon' ? '버번' : subCat === 'Wine/Port' ? '와인/포트' : subCat}
+                        {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : '버번'}
                       </span>
                     </label>
                   ))}

@@ -18,11 +18,11 @@ const spiritCategories: Array<{ value: WhiskeyCategory | 'spirit-all'; label: st
   { value: 'Beer & Soju', label: '맥주/소주' },
 ]
 
-const whiskeySubCategories: Array<{ value: WhiskeySubCategory; label: string }> = [
+const whiskeySubCategories: Array<{ value: WhiskeySubCategory | 'Other'; label: string }> = [
   { value: 'Sherry', label: '셰리 캐스크' },
   { value: 'Bourbon', label: '버번 캐스크' },
-  { value: 'Wine/Port', label: '와인/포트' },
   { value: 'Peat', label: '피트' },
+  { value: 'Other', label: '기타' },
 ]
 
 export function CategorySidebar({

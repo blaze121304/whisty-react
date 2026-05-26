@@ -9,7 +9,7 @@ export type WhiskeyCategory =
   | 'Beer & Soju'
 
 // 캐스크/풍미 특성 (백엔드 characteristics/cask와 매핑)
-export type WhiskeySubCategory = 'Sherry' | 'Peat' | 'Bourbon' | 'Wine/Port'
+export type WhiskeySubCategory = 'Sherry' | 'Peat' | 'Bourbon'
 
 export interface Whiskey {
   id: string

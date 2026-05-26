@@ -180,14 +180,10 @@ export default function WhiskeyDetailPage() {
                                 ? 'bg-[#800020]/70 text-white dark:bg-[#800020]/50'
                                 : subCat === 'Peat'
                                 ? 'bg-[#3D2817]/70 text-white dark:bg-[#3D2817]/50'
-                                : subCat === 'Bourbon'
-                                ? 'bg-[#FFD700]/70 text-amber-900 dark:bg-[#FFD700]/50 dark:text-amber-900'
-                                : subCat === 'Wine/Port'
-                                ? 'bg-[#722F37]/70 text-white dark:bg-[#722F37]/50'
-                                : ''
+                                : 'bg-[#FFD700]/70 text-amber-900 dark:bg-[#FFD700]/50 dark:text-amber-900'
                             }`}
                           >
-                            {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : subCat === 'Bourbon' ? '버번' : subCat === 'Wine/Port' ? '와인/포트' : subCat}
+                            {subCat === 'Sherry' ? '셰리' : subCat === 'Peat' ? '피트' : '버번'}
                           </span>
                         ))
                       })()}
